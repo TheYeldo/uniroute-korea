@@ -3,6 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { guides, guidesBySlug } from "@/data/guides";
 import { sourcesById } from "@/data/sources";
+import { localizedAlternates } from "@/lib/seo";
 import type { LocaleCode } from "@/types/domain";
 import { Info } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -18,7 +19,13 @@ export async function generateMetadata({
 }) {
   const { locale, slug } = await params;
   const guide = guidesBySlug.get(slug);
-  return guide ? { title: guide.title[locale], description: guide.summary[locale] } : {};
+  return guide
+    ? {
+        title: guide.title[locale],
+        description: guide.summary[locale],
+        alternates: localizedAlternates(locale, `guides/${slug}`),
+      }
+    : {};
 }
 export default async function GuidePage({
   params,

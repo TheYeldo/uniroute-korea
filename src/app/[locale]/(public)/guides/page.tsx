@@ -3,9 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { guides } from "@/data/guides";
 import { Link } from "@/i18n/navigation";
+import { localizedAlternates } from "@/lib/seo";
 import type { LocaleCode } from "@/types/domain";
 import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: LocaleCode }> }) {
+  const { locale } = await params;
+  const t = await getTranslations("Guides");
+  return {
+    title: t("title"),
+    description: t("subtitle"),
+    alternates: localizedAlternates(locale, "guides"),
+  };
+}
 
 export default async function GuidesPage({ params }: { params: Promise<{ locale: LocaleCode }> }) {
   const { locale } = await params;

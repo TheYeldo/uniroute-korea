@@ -1,10 +1,16 @@
 import { ScholarshipCatalog } from "@/components/scholarships/scholarship-catalog";
+import { localizedAlternates } from "@/lib/seo";
 import type { LocaleCode } from "@/types/domain";
 import { getTranslations } from "next-intl/server";
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: Promise<{ locale: LocaleCode }> }) {
+  const { locale } = await params;
   const t = await getTranslations("Scholarships");
-  return { title: t("title"), description: t("subtitle") };
+  return {
+    title: t("title"),
+    description: t("subtitle"),
+    alternates: localizedAlternates(locale, "scholarships"),
+  };
 }
 export default async function ScholarshipPage({
   params,

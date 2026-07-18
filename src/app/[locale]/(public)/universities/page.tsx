@@ -1,10 +1,16 @@
 import { UniversityCatalog } from "@/components/universities/university-catalog";
+import { localizedAlternates } from "@/lib/seo";
 import type { LocaleCode } from "@/types/domain";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: Promise<{ locale: LocaleCode }> }) {
+  const { locale } = await params;
   const t = await getTranslations("Universities");
-  return { title: t("title"), description: t("subtitle") };
+  return {
+    title: t("title"),
+    description: t("subtitle"),
+    alternates: localizedAlternates(locale, "universities"),
+  };
 }
 
 export default async function UniversitiesPage({

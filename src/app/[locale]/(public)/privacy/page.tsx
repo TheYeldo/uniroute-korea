@@ -1,5 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { localizedAlternates } from "@/lib/seo";
+import type { LocaleCode } from "@/types/domain";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: LocaleCode }> }) {
+  const { locale } = await params;
+  const t = await getTranslations("Privacy");
+  return {
+    title: t("title"),
+    description: t("intro"),
+    alternates: localizedAlternates(locale, "privacy"),
+  };
+}
 
 export default async function PrivacyPage() {
   const t = await getTranslations("Privacy");

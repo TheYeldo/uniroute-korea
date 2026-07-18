@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
+import { localizedAlternates } from "@/lib/seo";
+import type { LocaleCode } from "@/types/domain";
 import {
   ArrowRight,
   BookOpenCheck,
@@ -17,6 +19,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: LocaleCode }> }) {
+  const { locale } = await params;
+  return { alternates: localizedAlternates(locale) };
+}
 
 export default async function LandingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

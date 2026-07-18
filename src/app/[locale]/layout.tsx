@@ -2,6 +2,8 @@ import "../globals.css";
 import { AppProviders } from "@/components/providers/app-providers";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
+import { localizedAlternates } from "@/lib/seo";
+import type { LocaleCode } from "@/types/domain";
 import { Geist, Geist_Mono } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -21,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: { default: t("title"), template: `%s | UniRoute Korea` },
     description: t("description"),
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-    alternates: { languages: { ru: "/ru", en: "/en" } },
+    alternates: localizedAlternates(locale as LocaleCode),
     openGraph: { title: t("title"), description: t("description"), type: "website" },
   };
 }

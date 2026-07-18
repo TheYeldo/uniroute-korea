@@ -4,8 +4,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { programs } from "@/data/programs";
 import { universitiesById } from "@/data/universities";
 import { Link } from "@/i18n/navigation";
+import { localizedAlternates } from "@/lib/seo";
+import type { LocaleCode } from "@/types/domain";
 import { ExternalLink } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: LocaleCode }> }) {
+  const { locale } = await params;
+  const nav = await getTranslations("Navigation");
+  const university = await getTranslations("University");
+  return {
+    title: nav("programs"),
+    description: university("programLanguageWarning"),
+    alternates: localizedAlternates(locale, "programs"),
+  };
+}
 
 export default async function ProgramsPage() {
   const nav = await getTranslations("Navigation");

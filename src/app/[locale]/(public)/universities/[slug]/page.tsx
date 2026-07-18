@@ -14,6 +14,7 @@ import { scholarships } from "@/data/scholarships";
 import { sourcesById } from "@/data/sources";
 import { universities, universitiesBySlug } from "@/data/universities";
 import { Link } from "@/i18n/navigation";
+import { localizedAlternates } from "@/lib/seo";
 import type { LocaleCode } from "@/types/domain";
 import {
   ArrowLeft,
@@ -43,7 +44,7 @@ export async function generateMetadata({
   return {
     title: item.name,
     description: item.overview[locale as LocaleCode],
-    alternates: { canonical: `/${locale}/universities/${slug}` },
+    alternates: localizedAlternates(locale as LocaleCode, `universities/${slug}`),
   };
 }
 

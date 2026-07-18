@@ -1,11 +1,17 @@
 import { ComparisonWorkspace } from "@/components/comparison/comparison-workspace";
+import { localizedAlternates } from "@/lib/seo";
 import type { LocaleCode } from "@/types/domain";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: Promise<{ locale: LocaleCode }> }) {
+  const { locale } = await params;
   const t = await getTranslations("Compare");
-  return { title: t("title"), description: t("subtitle") };
+  return {
+    title: t("title"),
+    description: t("subtitle"),
+    alternates: localizedAlternates(locale, "compare"),
+  };
 }
 export default async function ComparePage({ params }: { params: Promise<{ locale: LocaleCode }> }) {
   const { locale } = await params;
